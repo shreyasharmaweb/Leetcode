@@ -56,10 +56,26 @@ class Solution {
     }
 
     static Boolean isSubsetSum(int N, int arr[], int sum) {
-        Boolean dp[][] = new Boolean[N + 1][sum + 1];
-        for (int i = 0; i < N + 1; i++) {
-            Arrays.fill(dp[i], null);
+    Boolean dp[][] = new Boolean[N + 1][sum + 1];
+    
+    for (int ind = 0; ind <= N; ind++) {
+        for (int target = 0; target <= sum; target++) {
+            if (target == 0) {
+                dp[ind][target] = true;
+            } else if (ind == 0) {
+                dp[ind][target] = false;
+            } else {
+                boolean nottake = dp[ind - 1][target];
+                boolean take = false;
+                if (target >= arr[ind - 1]) {
+                    take = dp[ind - 1][target - arr[ind - 1]];
+                }
+                dp[ind][target] = take || nottake;
+            }
         }
-        return fun(N - 1, sum, arr, dp);
     }
+    
+    return dp[N][sum];
+}
+
 }
