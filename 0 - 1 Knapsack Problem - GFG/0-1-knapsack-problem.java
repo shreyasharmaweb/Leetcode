@@ -69,15 +69,30 @@ class Solution
         
            return  dp[ind][max] = Math.max(not,take);
     }
-    static int knapSack(int W, int wt[], int val[], int n) 
-    { 
-         // your code here 
-         int dp[][]=new int[n][W+1];
-         for(int i=0;i<n;i++){
-             Arrays.fill(dp[i],-1);
-         }
-        return fun(wt.length-1, W,wt,val,dp);
-    } 
+    
+    
+    static int knapSack(int W, int wt[], int val[], int n) {
+    int dp[][] = new int[n][W+1];
+
+    for (int i = 0; i <= W; i++) {
+        if (wt[0] <= i) {
+            dp[0][i] = val[0];
+        }
+    }
+
+    for (int ind = 1; ind < n; ind++) {
+        for (int max = 0; max <= W; max++) {
+            int not = dp[ind-1][max];
+            int take = Integer.MIN_VALUE;
+            if (wt[ind] <= max) {
+                take = dp[ind-1][max-wt[ind]] + val[ind];
+            }
+            dp[ind][max] = Math.max(not, take);
+        }
+    }
+    return dp[n-1][W];
+}
+
 }
 
 
