@@ -1,0 +1,63 @@
+Knapsack Problem
+MediumAccuracy: 31.76%Submissions: 350K+Points: 4
+You are given weights and values of N items, put these items in a knapsack of capacity W to get the maximum total value in the knapsack. Note that we have only one quantity of each item.
+In other words, given two integer arrays val[0..N-1] and wt[0..N-1] which represent values and weights associated with N items respectively. Also given an integer W which represents knapsack capacity, find out the maximum value subset of val[] such that sum of the weights of this subset is smaller than or equal to W. You cannot break an item, either pick the complete item or dont pick it (0-1 property).
+
+Example 1:
+
+Input:
+N = 3
+W = 4
+values[] = {1,2,3}
+weight[] = {4,5,1}
+Output: 3
+Explanation: Choose the last item that weighs 1 unit and holds a value of 3. 
+class Solution 
+{ 
+    static int fun(int ind,int max,int wt[],int val[],int dp[][]){
+        
+            if(ind==0){
+                if(wt[ind]<=max){
+                    return val[0];
+                }
+                else {return 0;}
+            }
+            
+            if(dp[ind][max]!=-1){
+                return dp[ind][max];
+            }
+            
+            int not=fun(ind-1,max,wt,val,dp)+0;
+            int take=Integer.MIN_VALUE;
+            if(wt[ind]<=max){
+                take=fun(ind-1,max-wt[ind],wt,val,dp)+val[ind];
+            }
+        
+           return  dp[ind][max] = Math.max(not,take);
+    }
+    
+    
+    static int knapSack(int W, int wt[], int val[], int n) {
+    int dp[][] = new int[n][W+1];
+
+    for (int i = 0; i <= W; i++) {
+        if (wt[0] <= i) {
+            dp[0][i] = val[0];
+        }
+    }
+
+    for (int ind = 1; ind < n; ind++) {
+        for (int max = 0; max <= W; max++) {
+            int not = dp[ind-1][max];
+            int take = Integer.MIN_VALUE;
+            if (wt[ind] <= max) {
+                take = dp[ind-1][max-wt[ind]] + val[ind];
+            }
+            dp[ind][max] = Math.max(not, take);
+        }
+    }
+    return dp[n-1][W];
+}
+
+}
+
