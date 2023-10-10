@@ -24,14 +24,38 @@ class Solution {
 
 
         int dp[][]=new int[coins.length][amount+1];
-        for(int i=0;i<coins.length;i++){
-            Arrays.fill(dp[i],-1);
+       
+        for(int i=0;i<=amount;i++){
+            if(i%coins[0]==0){
+                   dp[0][i]=i/coins[0];
+            }
+            else
+            {
+                dp[0][i]=(int)Math.pow(10,9);
+            }
         }
+        for(int ind=1;ind<coins.length;ind++){
+             for(int target=0;target<=amount;target++){
 
-        int ans= fun(coins.length-1,amount,coins,dp);
-        if(ans>=(int)Math.pow(10,9)){
-            return -1;
+                   int nottake=0+dp[ind-1][target];
+
+                   int take=(int)Math.pow(10,9);
+                   if(coins[ind]<=target){
+                       take=1+dp[ind][target-coins[ind]];
+                         }
+
+                     dp[ind][target]= Math.min(nottake,take);
+             }
         }
-        else return ans;
+                 
+           int ans=dp[coins.length-1][amount];
+
+           if(ans>=(int)Math.pow(10,9)){
+                 return -1;
+           }
+                   
+            return ans;       
+                 
+                
     }
 }
