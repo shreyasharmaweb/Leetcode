@@ -47,51 +47,36 @@ class gfg
 
 
 class Solution 
-{ 
-    static int fun(int ind,int max,int wt[],int val[],int dp[][]){
-        
-            if(ind==0){
-                if(wt[ind]<=max){
-                    return val[0];
-                }
-                else {return 0;}
-            }
-            
-            if(dp[ind][max]!=-1){
-                return dp[ind][max];
-            }
-            
-            int not=fun(ind-1,max,wt,val,dp)+0;
-            int take=Integer.MIN_VALUE;
-            if(wt[ind]<=max){
-                take=fun(ind-1,max-wt[ind],wt,val,dp)+val[ind];
-            }
-        
-           return  dp[ind][max] = Math.max(not,take);
+{  
+    static int fun(int ind,int w,int wt[],int val[],int dp[][]){
+           
+           if(ind==0){
+               if(wt[0]<=w){
+                   return val[0];
+               }
+               else{
+                   return 0;
+               }
+           }
+           if(dp[ind][w]!=-1){
+               return dp[ind][w];
+           }
+           int not=fun(ind-1,w,wt,val,dp);
+           int take=Integer.MIN_VALUE;
+           if(wt[ind]<=w){
+               take=fun(ind-1,w-wt[ind],wt,val,dp)+val[ind];
+           }
+           
+           return dp[ind][w]=Math.max(not,take);
+           
     }
-    
-    
     static int knapSack(int W, int wt[], int val[], int n) {
-    int dp[][] = new int[n][W+1];
-
-    for (int i = 0; i <= W; i++) {
-        if (wt[0] <= i) {
-            dp[0][i] = val[0];
-        }
-    }
-
-    for (int ind = 1; ind < n; ind++) {
-        for (int max = 0; max <= W; max++) {
-            int not = dp[ind-1][max];
-            int take = Integer.MIN_VALUE;
-            if (wt[ind] <= max) {
-                take = dp[ind-1][max-wt[ind]] + val[ind];
-            }
-            dp[ind][max] = Math.max(not, take);
-        }
-    }
-    return dp[n-1][W];
-}
+         int dp[][]=new int[val.length][W+1];
+         for(int i=0;i<dp.length;i++){
+             Arrays.fill(dp[i],-1);
+         }
+         return fun(n-1,W,wt,val,dp);
+   }
 
 }
 
